@@ -3,26 +3,32 @@
 
 typedef struct LinkedList {
   int intValue;
-  struct LinkedList* head;
-  // struct LinkedList* tail;
   struct LinkedList* nextNode;
-  // struct LinkedList* prevNode;
 }LinkedList;
 
 LinkedList* createLinkedList() {
   LinkedList* list = (struct LinkedList*)malloc(sizeof(LinkedList));
-  list->head = NULL;
-  // list->tail = NULL;
   list->nextNode = NULL;
-  // list->prevNode = NULL;
+  list->intValue = NULL;
   return list;
 }
 
 //Encadear valor
-void chainValue(LinkedList *list, int value) {
-  list = (struct LinkedList*)malloc(sizeof(LinkedList));
-  list->intValue = value;
-  list->nextNode = NULL;
+void chainValue(LinkedList *head, int value) {
+  LinkedList* actualNode = head;
+  if (actualNode->intValue == NULL) {
+    printf("head insert: %d\n", value);
+    actualNode->intValue = value;
+    actualNode->nextNode = NULL;
+    return;
+  }
+  while (actualNode->nextNode != NULL) {
+    actualNode = actualNode->nextNode;
+  }
+  actualNode->nextNode = (struct LinkedList*)malloc(sizeof(LinkedList));
+  printf("body insert: %d\n", value);
+  actualNode->nextNode->intValue = value;
+  actualNode->nextNode->nextNode = NULL;
 }
 
 void printList(LinkedList* list) {
@@ -35,7 +41,13 @@ void printList(LinkedList* list) {
 }
 
 int main () {
-  LinkedList* newList = createLinkedList();
-  printList(newList);
+  LinkedList* head = createLinkedList();
+  int i;
+  scanf("%d", &i);
+  while (i != -1) {
+    chainValue(head, i);
+    scanf("%d", &i);
+  }
+  printList(head);
   return 0;
 }
